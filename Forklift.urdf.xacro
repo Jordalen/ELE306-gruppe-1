@@ -1,0 +1,451 @@
+<?xml version='1.0'?>
+
+<robot name="Forklift_robot" xmlns:xacro="http://www.ros.org/wiki/xacro">
+  <xacro:include filename="$(find custom_robot_tutorial)/urdf/mobile_manipulator_robot.urdf.gazebo" />
+
+
+  <!-- <gazebo>
+     <static>true</static>
+  </gazebo>
+<origin xyz="0 0 0.325" rpy="0 0 0"/> -->
+
+<!--############################### -->
+<!-- MOBILE PLATFORM -->
+<!--############################### -->
+<xacro:property name="base_length" value="2.1" />
+<xacro:property name="base_width" value="1.2" />
+<xacro:property name="base_height" value="0.55" />
+<xacro:property name="base_density" value="1" />
+<xacro:property name="base_mass" value="${base_length*base_height*base_width*base_density}" />
+<link name="base_link">
+  <visual>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://custom_robot_tutorial/meshes/Base.stl" />
+    </geometry>
+  </visual>
+  <collision>
+    <origin xyz="0 0 0.0" rpy="0 0 0"/>
+    <geometry>
+      <box size="${base_length} ${base_width} ${base_height}"/>
+    </geometry>
+  </collision>
+  <inertial>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <mass value="${base_mass}"/>
+    <inertia
+      ixx="${base_mass*(pow(base_height,2) + pow(base_width,2))/12}" ixy="0.0" ixz="0.0"
+      iyy="${base_mass*(pow(base_length,2) + pow(base_height,2))/12}" iyz="0.0"
+      izz="${base_mass*(pow(base_length,2) + pow(base_width,2))/12}"/>
+  </inertial>
+</link>
+
+<!--############################### -->
+<!-- FRONT LEFT WHEEL-->
+<!--############################### -->
+<joint type="continuous" name="front_left_wheel_joint">
+  <origin xyz="0.85 0.5 -0.135" rpy="-${pi/2} 0 0"/>
+  <child link="front_left_wheel_link"/>
+  <parent link="base_link"/>
+  <axis xyz="0 0 1" rpy="0 0 0"/>
+  <limit effort="100" velocity="100"/>
+</joint>
+
+<xacro:property name="front_left_wheel_radius" value="0.19" />
+<xacro:property name="front_left_wheel_length" value="0.2" />
+<xacro:property name="front_left_wheel_density" value="1.0" />
+<xacro:property name="front_left_wheel_mass" value="${pi*front_left_wheel_length*pow(front_left_wheel_radius,2)*front_left_wheel_density}" />
+
+<link name="front_left_wheel_link">
+  <visual>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <geometry>
+      <cylinder length="${front_left_wheel_length}" radius="${front_left_wheel_radius}"/>
+    </geometry>
+  </visual>
+  <collision>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <geometry>
+      <cylinder length="${front_left_wheel_length}" radius="${front_left_wheel_radius}"/>
+    </geometry>
+  </collision>
+  <inertial>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <mass value="${front_left_wheel_mass}"/>
+    <inertia
+      ixx="${front_left_wheel_mass*(3*pow(front_left_wheel_radius,2)+pow(front_left_wheel_length,2))/12}" ixy="0.0" ixz="0.0"
+      iyy="${front_left_wheel_mass*(3*pow(front_left_wheel_radius,2)+pow(front_left_wheel_length,2))/12}" iyz="0.0"
+      izz="${front_left_wheel_mass*pow(front_left_wheel_radius,2)/2}"/>
+  </inertial>
+</link>
+
+<!--############################### -->
+<!-- BACK LEFT WHEEL-->
+<!--############################### -->
+<joint type="continuous" name="back_left_wheel_joint">
+  <origin xyz="-0.85 0.5 -0.135" rpy="-${pi/2} 0 0"/>
+  <child link="back_left_wheel_link"/>
+  <parent link="base_link"/>
+  <axis xyz="0 0 1" rpy="0 0 0"/>
+  <limit effort="100" velocity="100"/>
+</joint>
+
+<xacro:property name="back_left_wheel_radius" value="0.19" />
+<xacro:property name="back_left_wheel_length" value="0.2" />
+<xacro:property name="back_left_wheel_density" value="1.0" />
+<xacro:property name="back_left_wheel_mass" value="${pi*back_left_wheel_length*pow(back_left_wheel_radius,2)*back_left_wheel_density}" />
+
+<link name="back_left_wheel_link">
+  <visual>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <geometry>
+      <cylinder length="${back_left_wheel_length}" radius="${back_left_wheel_radius}"/>
+    </geometry>
+  </visual>
+  <collision>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <geometry>
+      <cylinder length="${back_left_wheel_length}" radius="${back_left_wheel_radius}"/>
+    </geometry>
+  </collision>
+  <inertial>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <mass value="${back_left_wheel_mass}"/>
+    <inertia
+      ixx="${back_left_wheel_mass*(3*pow(back_left_wheel_radius,2)+pow(back_left_wheel_length,2))/12}" ixy="0.0" ixz="0.0"
+      iyy="${back_left_wheel_mass*(3*pow(back_left_wheel_radius,2)+pow(back_left_wheel_length,2))/12}" iyz="0.0"
+      izz="${back_left_wheel_mass*pow(back_left_wheel_radius,2)/2}"/>
+  </inertial>
+</link>
+
+<!--############################### -->
+<!-- FRONT RIGHT WHEEL-->
+<!--############################### -->
+<joint type="continuous" name="front_right_wheel_joint">
+  <origin xyz="0.85 -0.5 -0.135" rpy="-${pi/2} 0 0"/>
+  <child link="front_right_wheel_link"/>
+  <parent link="base_link"/>
+  <axis xyz="0 0 1" rpy="0 0 0"/>
+  <limit effort="100" velocity="100"/>
+</joint>
+
+<xacro:property name="front_right_wheel_radius" value="0.19" />
+<xacro:property name="front_right_wheel_length" value="0.2" />
+<xacro:property name="front_right_wheel_density" value="1.0" />
+<xacro:property name="front_right_wheel_mass" value="${pi*front_right_wheel_length*pow(front_right_wheel_radius,2)*front_right_wheel_density}" />
+
+<link name="front_right_wheel_link">
+  <visual>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <geometry>
+      <cylinder length="${front_right_wheel_length}" radius="${front_right_wheel_radius}"/>
+    </geometry>
+  </visual>
+  <collision>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <geometry>
+      <cylinder length="${front_right_wheel_length}" radius="${front_right_wheel_radius}"/>
+    </geometry>
+  </collision>
+  <inertial>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <mass value="${front_right_wheel_mass}"/>
+    <inertia
+      ixx="${front_right_wheel_mass*(3*pow(front_right_wheel_radius,2)+pow(front_right_wheel_length,2))/12}" ixy="0.0" ixz="0.0"
+      iyy="${front_right_wheel_mass*(3*pow(front_right_wheel_radius,2)+pow(front_right_wheel_length,2))/12}" iyz="0.0"
+      izz="${front_right_wheel_mass*pow(front_right_wheel_radius,2)/2}"/>
+  </inertial>
+</link>
+
+<!--############################### -->
+<!-- BACK RIGHT WHEEL-->
+<!--############################### -->
+<joint type="continuous" name="back_right_wheel_joint">
+  <origin xyz="-0.85 -0.5 -0.135" rpy="-${pi/2} 0 0"/>
+  <child link="back_right_wheel_link"/>
+  <parent link="base_link"/>
+  <axis xyz="0 0 1" rpy="0 0 0"/>
+  <limit effort="100" velocity="100"/>
+</joint>
+
+<xacro:property name="back_right_wheel_radius" value="0.19" />
+<xacro:property name="back_right_wheel_length" value="0.2" />
+<xacro:property name="back_right_wheel_density" value="1.0" />
+<xacro:property name="back_right_wheel_mass" value="${pi*back_right_wheel_length*pow(back_right_wheel_radius,2)*back_right_wheel_density}" />
+
+<link name="back_right_wheel_link">
+  <visual>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <geometry>
+      <cylinder length="${back_right_wheel_length}" radius="${back_right_wheel_radius}"/>
+    </geometry>
+  </visual>
+  <collision>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <geometry>
+      <cylinder length="${back_right_wheel_length}" radius="${back_right_wheel_radius}"/>
+    </geometry>
+  </collision>
+  <inertial>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <mass value="${back_right_wheel_mass}"/>
+    <inertia
+      ixx="${back_right_wheel_mass*(3*pow(back_right_wheel_radius,2)+pow(back_right_wheel_length,2))/12}" ixy="0.0" ixz="0.0"
+      iyy="${back_right_wheel_mass*(3*pow(back_right_wheel_radius,2)+pow(back_right_wheel_length,2))/12}" iyz="0.0"
+      izz="${back_right_wheel_mass*pow(back_right_wheel_radius,2)/2}"/>
+  </inertial>
+</link>
+
+<!--############################### -->
+<!-- ARM BASE-->
+<!--############################### -->
+<joint type="revolute" name="arm_base_joint">
+  <origin xyz="0.75 0 0.325" rpy="0 0 0"/>
+  <child link="arm_base_link"/>
+  <parent link="base_link"/>
+  <axis xyz="0 0 1" rpy="0 0 0"/>
+  <limit effort="100" velocity="100" lower="-${pi}" upper="${pi}"/>
+</joint>
+
+<xacro:property name="arm_base_radius" value="0.125" />
+<xacro:property name="arm_base_length" value="0.375" />
+<xacro:property name="arm_base_density" value="1.0" />
+<xacro:property name="arm_base_mass" value="${pi*arm_base_length*pow(arm_base_radius,2)*arm_base_density}" />
+
+<link name="arm_base_link">
+  <visual>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://custom_robot_tutorial/meshes/arm_base_v2.stl" />
+    </geometry>
+  </visual>
+  <collision>
+    <origin xyz="0 0 ${arm_base_length/2}" rpy="0 0 0"/>
+    <geometry>
+      <cylinder length="${arm_base_length}" radius="${arm_base_radius}"/>
+    </geometry>
+  </collision>
+  <inertial>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <mass value="${arm_base_mass}"/>
+    <inertia
+      ixx="${arm_base_mass*(3*pow(arm_base_radius,2)+pow(arm_base_length,2))/12}" ixy="0.0" ixz="0.0"
+      iyy="${arm_base_mass*(3*pow(arm_base_radius,2)+pow(arm_base_length,2))/12}" iyz="0.0"
+      izz="${arm_base_mass*pow(arm_base_radius,2)/2}"/>
+  </inertial>
+</link>
+
+
+<transmission name="arm_base_tran">
+  <type>transmission_interface/SimpleTransmission</type>
+  <joint name="arm_base_joint">
+    <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+  </joint>
+  <actuator name="arm_base_motor">
+    <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+    <mechanicalReduction>1</mechanicalReduction>
+  </actuator>
+</transmission>
+
+<!--############################### -->
+<!-- ARM LINK1-->
+<!--############################### -->
+<joint type="revolute" name="arm_link1_joint">
+  <origin xyz="0 -0.14 0.45" rpy="${pi/2} 0 0"/>
+  <child link="arm_link1_link"/>
+  <parent link="arm_base_link"/>
+  <axis xyz="0 0 1" rpy="0 0 0"/>
+  <limit effort="100" velocity="100" lower="-${pi}" upper="${pi}"/>
+</joint>
+
+<xacro:property name="arm_link1_radius" value="0.125" />
+<xacro:property name="arm_link1_length" value="0.85" />
+<xacro:property name="arm_link1_density" value="1.0" />
+<xacro:property name="arm_link1_mass" value="${pi*arm_link1_length*pow(arm_link1_radius,2)*arm_link1_density}" />
+
+<link name="arm_link1_link">
+  <visual>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://custom_robot_tutorial/meshes/arm_link1.stl" />
+    </geometry>
+  </visual>
+  <collision>
+    <origin xyz="${arm_link1_length/2 - arm_link1_radius/2} 0 0.14" rpy="0 ${pi/2} 0"/>
+    <geometry>
+      <cylinder length="${arm_link1_length}" radius="${arm_link1_radius}"/>
+    </geometry>
+  </collision>
+  <inertial>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <mass value="${arm_link1_mass}"/>
+    <inertia
+      ixx="${arm_link1_mass*(3*pow(arm_link1_radius,2)+pow(arm_link1_length,2))/12}" ixy="0.0" ixz="0.0"
+      iyy="${arm_link1_mass*(3*pow(arm_link1_radius,2)+pow(arm_link1_length,2))/12}" iyz="0.0"
+      izz="${arm_link1_mass*pow(arm_link1_radius,2)/2}"/>
+  </inertial>
+</link>
+
+<transmission name="arm_link1_tran">
+  <type>transmission_interface/SimpleTransmission</type>
+  <joint name="arm_link1_joint">
+    <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+  </joint>
+  <actuator name="arm_link1_motor">
+    <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+    <mechanicalReduction>1</mechanicalReduction>
+  </actuator>
+</transmission>
+
+<!--############################### -->
+<!-- ARM LINK2-->
+<!--############################### -->
+<joint type="revolute" name="arm_link2_joint">
+  <origin xyz="0.7 0 0" rpy="0 0 0"/>
+  <child link="arm_link2_link"/>
+  <parent link="arm_link1_link"/>
+  <axis xyz="0 0 1" rpy="0 0 0"/>
+  <limit effort="100" velocity="100" lower="-${pi}" upper="${pi}"/>
+</joint>
+
+<xacro:property name="arm_link2_radius" value="0.125" />
+<xacro:property name="arm_link2_length" value="1.05" />
+<xacro:property name="arm_link2_density" value="1.0" />
+<xacro:property name="arm_link2_mass" value="${pi*arm_link2_length*pow(arm_link2_radius,2)*arm_link2_density}" />
+
+<link name="arm_link2_link">
+  <visual>
+    <origin xyz="0 0 0" rpy="0 0 ${pi/2}"/>
+    <geometry>
+      <mesh filename="package://custom_robot_tutorial/meshes/arm_link2.stl" />
+    </geometry>
+  </visual>
+  <collision>
+    <origin xyz="0 -0.4 -0.14" rpy="${pi/2} 0 0"/>
+    <geometry>
+      <cylinder length="${arm_link2_length}" radius="${arm_link2_radius}"/>
+    </geometry>
+  </collision>
+  <inertial>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <mass value="${arm_link2_mass}"/>
+    <inertia
+      ixx="${arm_link2_mass*(3*pow(arm_link2_radius,2)+pow(arm_link2_length,2))/12}" ixy="0.0" ixz="0.0"
+      iyy="${arm_link2_mass*(3*pow(arm_link2_radius,2)+pow(arm_link2_length,2))/12}" iyz="0.0"
+      izz="${arm_link2_mass*pow(arm_link2_radius,2)/2}"/>
+  </inertial>
+</link>
+
+<transmission name="arm_link2_tran">
+  <type>transmission_interface/SimpleTransmission</type>
+  <joint name="arm_link2_joint">
+    <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+  </joint>
+  <actuator name="arm_link2_motor">
+    <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+    <mechanicalReduction>1</mechanicalReduction>
+  </actuator>
+</transmission>
+
+<!--############################### -->
+<!-- ARM LINK3-->
+<!--############################### -->
+<joint type="revolute" name="arm_link3_joint">
+  <origin xyz="0.8 0 0" rpy="0 0 0"/>
+  <child link="arm_link3_link"/>
+  <parent link="arm_link2_link"/>
+  <axis xyz="0 0 1" rpy="0 0 0"/>
+  <limit effort="100" velocity="100" lower="-${pi}" upper="${pi}"/>
+</joint>
+
+<xacro:property name="arm_link3_radius" value="0.125" />
+<xacro:property name="arm_link3_length" value="0.65" />
+<xacro:property name="arm_link3_density" value="1.0" />
+<xacro:property name="arm_link3_mass" value="${pi*arm_link3_length*pow(arm_link3_radius,2)*arm_link3_density}" />
+
+<link name="arm_link3_link">
+  <visual>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://custom_robot_tutorial/meshes/arm_link3.stl" />
+    </geometry>
+  </visual>
+  <collision>
+    <origin xyz="0.2 0 ${arm_link3_radius}" rpy="0 ${pi/2} 0"/>
+    <geometry>
+      <cylinder length="${arm_link3_length}" radius="${arm_link3_radius}"/>
+    </geometry>
+  </collision>
+  <inertial>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <mass value="${arm_link3_mass}"/>
+    <inertia
+      ixx="${arm_link3_mass*(3*pow(arm_link3_radius,2)+pow(arm_link3_length,2))/12}" ixy="0.0" ixz="0.0"
+      iyy="${arm_link3_mass*(3*pow(arm_link3_radius,2)+pow(arm_link3_length,2))/12}" iyz="0.0"
+      izz="${arm_link3_mass*pow(arm_link3_radius,2)/2}"/>
+  </inertial>
+</link>
+
+<transmission name="arm_link3_tran">
+  <type>transmission_interface/SimpleTransmission</type>
+  <joint name="arm_link3_joint">
+    <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+  </joint>
+  <actuator name="arm_link3_motor">
+    <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+    <mechanicalReduction>1</mechanicalReduction>
+  </actuator>
+</transmission>
+
+<!--############################### -->
+<!-- PALLEGAFFEL LINK-->
+<!--############################### -->
+<joint type="revolute" name="pallegaffel_joint">
+  <origin xyz="0.4 0 0" rpy="0 0 0"/>
+  <child link="pallegaffel_link"/>
+  <parent link="arm_link3_link"/>
+  <axis xyz="0 0 1" rpy="0 0 0"/>
+  <limit effort="100" velocity="100" lower="-${pi}" upper="${pi}"/>
+</joint>
+
+<xacro:property name="pallegaffel_length" value="1" />
+<xacro:property name="pallegaffel_width" value="0.04" />
+<xacro:property name="pallegaffel_height" value="0.4" />
+<xacro:property name="pallegaffel_density" value="1" />
+<xacro:property name="pallegaffel_mass" value="${pallegaffel_length*pallegaffel_height*pallegaffel_width*pallegaffel_density}" />
+
+<link name="pallegaffel_link">
+  <visual>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://custom_robot_tutorial/meshes/pallegaffel_link.stl" />
+    </geometry>
+  </visual>
+  <collision>
+    <origin xyz="0.75 -0.27 -0.125" rpy="0 0 0"/>
+    <geometry>
+      <box size="${pallegaffel_length} ${pallegaffel_width} ${pallegaffel_height}"/>
+    </geometry>
+  </collision>
+  <inertial>
+    <origin xyz="0 0 0" rpy="0 ${pi/2} 0"/>
+    <mass value="${pallegaffel_mass}"/>
+    <inertia
+      ixx="${pallegaffel_mass*(pow(pallegaffel_height,2) + pow(pallegaffel_width,2))/12}" ixy="0.0" ixz="0.0"
+      iyy="${pallegaffel_mass*(pow(pallegaffel_length,2) + pow(pallegaffel_height,2))/12}" iyz="0.0"
+      izz="${pallegaffel_mass*(pow(pallegaffel_length,2) + pow(pallegaffel_width,2))/12}"/>
+  </inertial>
+</link>
+
+<transmission name="pallegaffel_tran">
+  <type>transmission_interface/SimpleTransmission</type>
+  <joint name="pallegaffel_joint">
+    <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+  </joint>
+  <actuator name="pallegaffel_motor">
+    <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+    <mechanicalReduction>1</mechanicalReduction>
+  </actuator>
+</transmission>
+
+  </robot>
