@@ -20,7 +20,7 @@ lp.plot(p)
 o = lp.query([27 57 0], [82 7 0]);
 lp.plot(o)
 
-%% Lager path
+%% Lager path for å hente pall
 
 path = [1.2   1.2;
         2.2   1.2;
@@ -90,7 +90,7 @@ while( distanceToGoal > goalRadius )
     waitfor(vizRate);
 end
 
-%% fra pall
+%% lager fra henting av pall og kjører til hentepunkt
 path = [2.7   5.7
         2.7   1.2;
         3.2   0.7;
